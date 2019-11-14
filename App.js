@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import HomeStack from './stacks/HomeStack'
 import WorkoutsStack from './stacks/WorkoutsStack'
+import CalanderStack from './stacks/CalanderStack'
 import { NavigationNativeContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -22,6 +23,12 @@ const App = () => {
           component={WorkoutsStack}
           options={{
             title: 'Workouts'
+          }} />
+        <MainStack.Screen 
+          name="CalanderStack" 
+          component={CalanderStack}
+          options={{
+            title: 'Calander'
           }} />
       </MainStack.Navigator>
     </NavigationNativeContainer>
