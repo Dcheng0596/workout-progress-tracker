@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import HomeStack from './stacks/HomeStack'
 import WorkoutsStack from './stacks/WorkoutsStack'
 import CalanderStack from './stacks/CalanderStack'
+import OptionsStack from './stacks/OptionsStack'
 import { NavigationNativeContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -29,6 +30,12 @@ const App = () => {
           component={CalanderStack}
           options={{
             title: 'Calander'
+          }} />
+        <MainStack.Screen 
+          name="OptionsStack" 
+          component={OptionsStack}
+          options={{
+            title: 'Options'
           }} />
       </MainStack.Navigator>
     </NavigationNativeContainer>
