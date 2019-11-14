@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import HomeStack from './stacks/HomeStack'
-import WorkoutsScreen from './screens/WorkoutsScreen'
+import WorkoutsStack from './stacks/WorkoutsStack'
 import { NavigationNativeContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -17,7 +17,12 @@ const App = () => {
           options={{
             title: 'Home'
           }} />
-        <MainStack.Screen name="Workouts" component={WorkoutsScreen} />
+        <MainStack.Screen 
+          name="WorkoutsStack" 
+          component={WorkoutsStack}
+          options={{
+            title: 'Workouts'
+          }} />
       </MainStack.Navigator>
     </NavigationNativeContainer>
   );
