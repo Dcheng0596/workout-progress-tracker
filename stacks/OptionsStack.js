@@ -11,7 +11,7 @@ const OptionsStack = () => {
             name="Options" 
             component={OptionsScreen}
             options={{
-                title: 'Home'
+                title: 'Options'
             }} />
         </Stack.Navigator>
     )
