@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
 import WorkoutItem from './WorkoutItem';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import SwipeListGlobals from '../globals/SwipeListGlobals';
@@ -18,7 +18,9 @@ const WorkoutList = props => {
                 </TouchableHighlight>
             )}
             renderHiddenItem={ (data, rowMap) => (
-                <WorkoutItem title='Delete' style={styles.rowBack} />
+              <TouchableOpacity style={styles.rowBack}>
+                <WorkoutItem title='Delete' />               
+              </TouchableOpacity>
             )}
             swipeToOpenPercent={SwipeListGlobals.swipeToOpenPercent}
             swipeToClosePercent={SwipeListGlobals.swipeToClosePercent}

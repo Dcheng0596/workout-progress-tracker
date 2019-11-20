@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
 import CreateWorkoutSection from './CreateWorkoutSection';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import SwipeListGlobals from '../globals/SwipeListGlobals';
@@ -16,7 +16,9 @@ const CreateWorkoutList = props => {
                 </TouchableHighlight>
             )}
             renderHiddenItem={ (data, rowMap) => (
-                <Card style={styles.rowBack} title="Delete" />
+                <TouchableOpacity onPress={() => props.onPress(data.item.key)} style={styles.rowBack} >
+                  <Card title="Delete" />
+                </TouchableOpacity>
             )}
             swipeToOpenPercent={SwipeListGlobals.swipeToOpenPercent}
             swipeToClosePercent={SwipeListGlobals.swipeToClosePercent}

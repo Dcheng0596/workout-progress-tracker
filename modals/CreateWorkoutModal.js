@@ -8,11 +8,11 @@ const CreateWorkoutModal = ({ navigation }) => {
   const [workout, setWorkout] = useState({
     name: "",
     key: "",
-    sections: [{ name: "test", key: "0", exercises: [] }]
+    sections: [{ name: "", key: "0", exercises: [] }]
   });
 
   //Update workout name from input field
-  const handleWorkoutInput = (workoutName) => {
+  const WorkoutInputHandler = (workoutName) => {
     let state = {...workout};
     state.name = workoutName;
 
@@ -20,13 +20,27 @@ const CreateWorkoutModal = ({ navigation }) => {
  }
 
   //Finds section with a certain key and update the section name
-  const handleSectionInput = (sectionName, sectionKey) => {
+  const sectionInputHandler = (sectionName, sectionKey) => {
      let state = {...workout};
      let sectionIndex = state.sections.findIndex(element => element.key == sectionKey)
-     state.sections[sectionKey].name = sectionName;
+     state.sections[sectionIndex].name = sectionName;
 
      setWorkout(state);
-     console.log(workout);
+  }
+
+  const addSectionHandler = () => {
+    let state = {...workout};
+    state.sections.push({ name: "", key: "2", exercises: [] })
+
+    setWorkout(state);
+  }
+
+  const removeSectionHandler = (sectionKey) => {
+    let state = {...workout};
+    let sectionIndex = state.sections.findIndex(element => element.key == sectionKey)
+    state.sections.splice(sectionIndex, 1);
+
+    setWorkout(state);
   }
 
   return (
@@ -35,13 +49,17 @@ const CreateWorkoutModal = ({ navigation }) => {
         <InputField  
           title="Workout"
           placeholder={'e.g. "Monday Upper Body"'} 
-          onChange={handleWorkoutInput}
+          onChange={WorkoutInputHandler}
           style={styles.workoutInput}
         />  
-        <CreateWorkoutList sections={workout.sections} onChange={handleSectionInput}/>
+        <CreateWorkoutList 
+          sections={workout.sections} 
+          onChange={sectionInputHandler} 
+          onPress={removeSectionHandler} 
+        />
       </ScrollView>
       <View style={styles.createSectionButton}>
-          <CustomButton title='+' onPress={() => {}}/>
+          <CustomButton title='+' onPress={addSectionHandler}/>
       </View>
     </View>
   );
