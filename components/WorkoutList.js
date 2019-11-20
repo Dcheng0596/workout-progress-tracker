@@ -1,24 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
 import WorkoutItem from './WorkoutItem';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { useFocusEffect } from '@react-navigation/core';
 import SwipeListGlobals from '../globals/SwipeListGlobals';
 
 const WorkoutList = props => {
+  const [workouts, setWorkouts] = useState([])
 
+  // Fetch workouts from AsyncStorage when screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      AsyncStorage.getItem('workouts').then((data) => {
+        console.log(JSON.parse(data))
+        setWorkouts(JSON.parse(data))
+      })
+    }, [])
+  );
 
-    const DATA = [{title: 'hi', key: "1"}, {title: 'bye', key: "2"}]
+  
     
     return (
       <SwipeListView
-            data={DATA}
+            data={workouts}
             renderItem={ (data, rowMap) => (
                 <TouchableHighlight underlayColor={'black'} onPress={() => {}}>
-                  <WorkoutItem title={data.item.title} style={styles.rowFront} />
+                  <WorkoutItem title={data.item.name} style={styles.rowFront} />
                 </TouchableHighlight>
             )}
             renderHiddenItem={ (data, rowMap) => (
-              <TouchableOpacity style={styles.rowBack}>
+              <TouchableOpacity style={styles.rowBack} >
                 <WorkoutItem title='Delete' />               
               </TouchableOpacity>
             )}
