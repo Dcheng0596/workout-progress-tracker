@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, ScrollView, StyleSheet, AsyncStorage} from 'react-native';
 import CreateWorkoutList from '../components/CreateWorkoutList';
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
 
-const CreateWorkoutModal = ({ navigation }) => {
+const CreateWorkoutModal = ({ navigation, route }) => {
   const [workout, setWorkout] = useState({
     name: "",
     key: "",
     sections: [{ name: "", key: "0", exercises: [] }]
   });
+
+  useEffect(() => {
+    if(route.params != null) {
+      if(route.params.isDone == true) {
+        storeWorkoutHandler();
+        navigation.goBack()
+      }
+        
+    }
+  })
+
 
   //Update workout name from input field
   const WorkoutInputHandler = (workoutName) => {
@@ -41,6 +52,19 @@ const CreateWorkoutModal = ({ navigation }) => {
     state.sections.splice(sectionIndex, 1);
 
     setWorkout(state);
+  }
+
+  const storeWorkoutHandler = async () => {
+    try {
+      await AsyncStorage.getItem('workouts')
+      .then((workouts) => {
+        const w = workouts ? JSON.parse(workouts) : [];
+        w.push(workout);
+        AsyncStorage.setItem('workouts', JSON.stringify(w))
+      })
+    } catch (error) {
+      console.log("Error Creating Workout")
+    }
   }
 
   return (

@@ -6,7 +6,7 @@ import CreateWorkoutModal from '../modals/CreateWorkoutModal';
 
 const Stack = createStackNavigator();
 
-const RootStack = ( {navigation} ) => {
+const RootStack = () => {
   return (
       <Stack.Navigator 
         initialRouteName="TabStack"
@@ -24,12 +24,18 @@ const RootStack = ( {navigation} ) => {
         <Stack.Screen 
           name="CreateWorkoutModal" 
           component={CreateWorkoutModal}
-          options={{
+          initialParams={{ isDone: false }}
+          options={({ navigation }) => ({
               title: 'Create Workout',
               headerRight: () => (
-                <Button title="Done" />
+                <Button title="Done" onPress={() => 
+                  navigation.setParams({
+                    isDone: true
+                  })
+                  } 
+                />
               )
-          }}
+          })}
         />
       </Stack.Navigator>
   );
