@@ -10,7 +10,9 @@ const Stack = createBottomTabNavigator();
 
 const TabStack = () => {
   return (
-      <Stack.Navigator initialRouteName="Home" >
+      <Stack.Navigator 
+        initialRouteName="Home"
+      >
         <Stack.Screen 
           name="Home" 
           component={HomeStack}

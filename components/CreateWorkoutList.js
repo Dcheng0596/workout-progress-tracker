@@ -1,24 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableHighlight, AsyncStorage } from 'react-native';
-import WorkoutItem from './WorkoutItem';
+import CreateWorkoutSection from './CreateWorkoutSection';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import SwipeListGlobals from '../globals/SwipeListGlobals';
+import Card from './Card';
 
-const WorkoutList = props => {
 
-
-    const DATA = [{title: 'hi', key: "1"}, {title: 'bye', key: "2"}]
-    
+const CreateWorkoutList = props => {
     return (
       <SwipeListView
-            data={DATA}
+            data={props.sections}
             renderItem={ (data, rowMap) => (
                 <TouchableHighlight underlayColor={'black'} onPress={() => {}}>
-                  <WorkoutItem title={data.item.title} style={styles.rowFront} />
+                  <CreateWorkoutSection style={styles.rowFront} onChange={props.onChange} itemKey={data.item.key} />
                 </TouchableHighlight>
             )}
             renderHiddenItem={ (data, rowMap) => (
-                <WorkoutItem title='Delete' style={styles.rowBack} />
+                <Card style={styles.rowBack} title="Delete" />
             )}
             swipeToOpenPercent={SwipeListGlobals.swipeToOpenPercent}
             swipeToClosePercent={SwipeListGlobals.swipeToClosePercent}
@@ -41,7 +39,7 @@ const WorkoutList = props => {
         borderBottomColor: 'black',
         borderBottomWidth: 1,
         justifyContent: 'center',
-        height: 60,
+        height: 80,
     },
     rowBack: {
         alignItems: 'center',
@@ -53,4 +51,4 @@ const WorkoutList = props => {
     }
 });
 
-  export default WorkoutList;
+  export default CreateWorkoutList;
