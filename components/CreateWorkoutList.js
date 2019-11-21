@@ -5,18 +5,29 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import SwipeListGlobals from '../globals/SwipeListGlobals';
 import Card from './Card';
 
-
 const CreateWorkoutList = props => {
     return (
       <SwipeListView
             data={props.sections}
             renderItem={ (data, rowMap) => (
-                <TouchableHighlight underlayColor={'black'} onPress={() => {}}>
-                  <CreateWorkoutSection style={styles.rowFront} onChange={props.onChange} itemKey={data.item.key} />
+                <TouchableHighlight 
+                  style={styles.rowFront}
+                   underlayColor={'grey'} 
+                   onPress={() => {}}>
+                  <CreateWorkoutSection 
+                    onChange={props.onChange} 
+                    itemKey={data.item.key} 
+                    autoFocus={props.autoFocus}
+                    autoCorrect={props.autoCorrect}
+                 />
                 </TouchableHighlight>
             )}
             renderHiddenItem={ (data, rowMap) => (
-                <TouchableOpacity onPress={() => props.onPress(data.item.key)} style={styles.rowBack} >
+                <TouchableOpacity 
+                  onPress={() => 
+                  props.onPress(data.item.key)} 
+                  style={styles.rowBack} 
+                >
                   <Card title="Delete" />
                 </TouchableOpacity>
             )}
@@ -39,17 +50,19 @@ const CreateWorkoutList = props => {
         alignItems: 'center',
         backgroundColor: '#CCC',
         borderBottomColor: 'black',
-        borderBottomWidth: 1,
+        borderRadius: 5,
         justifyContent: 'center',
-        height: 80,
+        marginHorizontal: 30,
+        marginTop: 20,
+        height: 100,
     },
     rowBack: {
         alignItems: 'center',
-        backgroundColor: '#DDD',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        paddingRight: 15,
+        marginTop: 20,
+        paddingRight: 60
     }
 });
 

@@ -6,7 +6,7 @@ export default SwipeListGlobals = {
     swipeToOpenVelocityContribution: 5,
     stopRightSwipe: -160,
     stopLeftSwipe: 160,
-    rightOpenValue: 80,
+    rightOpenValue: 120,
     friction: 80,
     tension: 80,
     closeOnRowPress: true,

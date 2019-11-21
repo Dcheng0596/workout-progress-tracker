@@ -8,6 +8,8 @@ const InputField = props => {
             style={[styles.inputField, props.style]} 
             placeholder={props.placeholder}
             onChangeText={(text) => props.onChange(text, props.itemKey)}
+            autoFocus={props.autoFocus}
+            autoCorrect={props.autoCorrect}
         />
         <Text>{props.title}</Text>
       </View>

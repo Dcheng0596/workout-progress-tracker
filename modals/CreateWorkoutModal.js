@@ -3,19 +3,21 @@ import { View, Text, Button, ScrollView, StyleSheet, AsyncStorage} from 'react-n
 import CreateWorkoutList from '../components/CreateWorkoutList';
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
+import shortid from 'shortid'
 
 const CreateWorkoutModal = ({ navigation, route }) => {
   const [workout, setWorkout] = useState({
     name: "",
-    key: "",
-    sections: [{ name: "", key: "0", exercises: [] }]
+    key: shortid.generate(),
+    sections: [{ name: "", key: shortid.generate(), exercises: [] }]
   });
+  const [autoFocus, setAutoFocus] = useState(false)
 
   useEffect(() => {
     if(route.params != null) {
       if(route.params.isDone == true) {
         storeWorkoutHandler();
-        navigation.goBack()
+        navigation.navigate("Workouts");
       }
         
     }
@@ -41,8 +43,9 @@ const CreateWorkoutModal = ({ navigation, route }) => {
 
   const addSectionHandler = () => {
     let state = {...workout};
-    state.sections.push({ name: "", key: "2", exercises: [] })
+    state.sections.push({ name: "", key: shortid.generate(), exercises: [] })
 
+    setAutoFocus(true);
     setWorkout(state);
   }
 
@@ -75,11 +78,15 @@ const CreateWorkoutModal = ({ navigation, route }) => {
           placeholder={'e.g. "Monday Upper Body"'} 
           onChange={WorkoutInputHandler}
           style={styles.workoutInput}
+          autoFocus={true}
+          autoCorrect={false}
         />  
         <CreateWorkoutList 
           sections={workout.sections} 
           onChange={sectionInputHandler} 
           onPress={removeSectionHandler} 
+          autoFocus={autoFocus}
+          autoCorrect={false}
         />
       </ScrollView>
       <View style={styles.createSectionButton}>

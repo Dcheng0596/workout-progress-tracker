@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
 import WorkoutItem from './WorkoutItem';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -18,18 +18,39 @@ const WorkoutList = props => {
     }, [])
   );
 
-  
-    
+  useEffect(() => {
+    try {
+      AsyncStorage.setItem('workouts', JSON.stringify(workouts))
+    } catch (error) {
+      console.log("Error Deleting Workout")
+    }
+  }, [workouts])
+
+    const removeWorkoutHandler = (workoutKey) => {
+      let state = [...workouts];
+      let sectionIndex = state.findIndex(element => element.key == workoutKey)
+      state.splice(sectionIndex, 1);
+
+      setWorkouts(state);
+    }
+
     return (
-      <SwipeListView
+      <SwipeListView 
             data={workouts}
             renderItem={ (data, rowMap) => (
-                <TouchableHighlight underlayColor={'black'} onPress={() => {}}>
-                  <WorkoutItem title={data.item.name} style={styles.rowFront} />
+                <TouchableHighlight  
+                  style={styles.rowFront} 
+                  underlayColor={'grey'} 
+                  onPress={() => {}}
+                >
+                  <WorkoutItem title={data.item.name} />
                 </TouchableHighlight>
             )}
             renderHiddenItem={ (data, rowMap) => (
-              <TouchableOpacity style={styles.rowBack} >
+              <TouchableOpacity 
+                style={styles.rowBack} 
+                onPress={() => removeWorkoutHandler(data.item.key)} 
+              >
                 <WorkoutItem title='Delete' />               
               </TouchableOpacity>
             )}
@@ -52,17 +73,19 @@ const WorkoutList = props => {
         alignItems: 'center',
         backgroundColor: '#CCC',
         borderBottomColor: 'black',
-        borderBottomWidth: 1,
+        borderRadius: 5,
         justifyContent: 'center',
-        height: 60,
+        marginHorizontal: 30,
+        marginTop: 20,
+        height: 100,
     },
     rowBack: {
         alignItems: 'center',
-        backgroundColor: '#DDD',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        paddingRight: 15,
+        marginTop: 20,
+        paddingRight: 60
     }
 });
 

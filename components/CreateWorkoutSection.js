@@ -11,6 +11,7 @@ const CreateWorkoutSection = props => {
             onChange={props.onChange}
             itemKey={props.itemKey}
             style={styles.sectionInput}
+            autoFocus={props.autoFocus}
         />  
       </View>
     
