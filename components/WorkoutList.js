@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
 import WorkoutItem from './WorkoutItem';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { useFocusEffect } from '@react-navigation/core';
 import SwipeListGlobals from '../globals/SwipeListGlobals';
+import * as SecureStore from 'expo-secure-store';
+
 
 const WorkoutList = props => {
   const [workouts, setWorkouts] = useState([])
@@ -11,7 +13,7 @@ const WorkoutList = props => {
   // Fetch workouts from AsyncStorage when screen comes into focus
   useFocusEffect(
     React.useCallback(() => {
-      AsyncStorage.getItem('workouts').then((data) => {
+        SecureStore.getItemAsync('workouts').then((data) => {
         console.log(JSON.parse(data))
         setWorkouts(JSON.parse(data))
       })
@@ -20,7 +22,7 @@ const WorkoutList = props => {
 
   useEffect(() => {
     try {
-      AsyncStorage.setItem('workouts', JSON.stringify(workouts))
+      SecureStore.setItemAsync('workouts', JSON.stringify(workouts))
     } catch (error) {
       console.log("Error Deleting Workout")
     }

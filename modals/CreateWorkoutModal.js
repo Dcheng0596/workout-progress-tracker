@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet, AsyncStorage} from 'react-native';
+import { View, Text, Button, ScrollView, StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
 import CreateWorkoutList from '../components/CreateWorkoutList';
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
-import shortid from 'shortid'
+import shortid from 'shortid';
+import * as SecureStore from 'expo-secure-store';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 const CreateWorkoutModal = ({ navigation, route }) => {
   const [workout, setWorkout] = useState({
@@ -17,7 +20,7 @@ const CreateWorkoutModal = ({ navigation, route }) => {
     if(route.params != null) {
       if(route.params.isDone == true) {
         storeWorkoutHandler();
-        navigation.navigate("Workouts");
+        SecureStore.getItemAsync('workout').then(data => navigation.navigate("Workouts"));
       }
         
     }
@@ -59,11 +62,12 @@ const CreateWorkoutModal = ({ navigation, route }) => {
 
   const storeWorkoutHandler = async () => {
     try {
-      await AsyncStorage.getItem('workouts')
+      await SecureStore.getItemAsync('workouts')
       .then((workouts) => {
         const w = workouts ? JSON.parse(workouts) : [];
         w.push(workout);
-        AsyncStorage.setItem('workouts', JSON.stringify(w))
+        console.log(w)
+        SecureStore.setItemAsync('workouts', JSON.stringify(w))
       })
     } catch (error) {
       console.log("Error Creating Workout")
@@ -71,8 +75,17 @@ const CreateWorkoutModal = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.screen}>
-      <ScrollView>
+    <KeyboardAvoidingView 
+      style={styles.screen} 
+      behavior={Platform.OS === 'ios' ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 45 : 30}
+    >
+      <KeyboardAwareScrollView 
+        enableOnAndroid={true}
+        enableAutomaticScroll={(Platform.OS === 'ios')}
+        extraScrollHeight={120} 
+        viewIsInsideTabBar={true} 
+      > 
         <InputField  
           title="Workout"
           placeholder={'e.g. "Monday Upper Body"'} 
@@ -88,11 +101,11 @@ const CreateWorkoutModal = ({ navigation, route }) => {
           autoFocus={autoFocus}
           autoCorrect={false}
         />
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <View style={styles.createSectionButton}>
           <CustomButton title='+' onPress={addSectionHandler}/>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
