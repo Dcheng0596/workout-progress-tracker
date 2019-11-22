@@ -8,40 +8,41 @@ import Card from './Card';
 const CreateWorkoutList = props => {
     return (
       <SwipeListView
-            data={props.sections}
-            renderItem={ (data, rowMap) => (
-                <TouchableHighlight 
-                  style={styles.rowFront}
-                   underlayColor={'grey'} 
-                   onPress={() => {}}>
-                  <CreateWorkoutSection 
-                    onChange={props.onChange} 
-                    itemKey={data.item.key} 
-                    autoFocus={props.autoFocus}
-                    autoCorrect={props.autoCorrect}
-                 />
-                </TouchableHighlight>
-            )}
-            renderHiddenItem={ (data, rowMap) => (
-                <TouchableOpacity 
-                  onPress={() => 
-                  props.onPress(data.item.key)} 
-                  style={styles.rowBack} 
-                >
-                  <Card title="Delete" />
-                </TouchableOpacity>
-            )}
-            swipeToOpenPercent={SwipeListGlobals.swipeToOpenPercent}
-            swipeToClosePercent={SwipeListGlobals.swipeToClosePercent}
-            swipeToOpenVelocityContribution={SwipeListGlobals.swipeToOpenVelocityContribution}
-            stopRightSwipe={SwipeListGlobals.stopRightSwipe}
-            stopLeftSwipe={SwipeListGlobals.stopLeftSwipe}
-            rightOpenValue={-SwipeListGlobals.rightOpenValue}
-            friction={SwipeListGlobals.friction}
-            tension={SwipeListGlobals.tension}
-            closeOnRowPress={SwipeListGlobals.closeOnRowPress}
-            closeOnScroll={SwipeListGlobals.closeOnScroll}
-        />
+        keyboardDismissMode='on-drag'
+        data={props.sections}
+        renderItem={ (data, rowMap) => (
+          <TouchableHighlight 
+            style={styles.rowFront}
+            underlayColor={'grey'} 
+            onPress={() => {}}>
+            <CreateWorkoutSection 
+              onChange={props.onChange} 
+              itemKey={data.item.key} 
+              autoFocus={props.autoFocus}
+              autoCorrect={props.autoCorrect}
+            />
+          </TouchableHighlight>
+        )}
+        renderHiddenItem={ (data, rowMap) => (
+            <TouchableOpacity 
+              onPress={() => 
+              props.onPress(data.item.key)} 
+              style={styles.rowBack} 
+            >
+              <Card title="Delete" />
+            </TouchableOpacity>
+        )}
+        swipeToOpenPercent={SwipeListGlobals.swipeToOpenPercent}
+        swipeToClosePercent={SwipeListGlobals.swipeToClosePercent}
+        swipeToOpenVelocityContribution={SwipeListGlobals.swipeToOpenVelocityContribution}
+        stopRightSwipe={SwipeListGlobals.stopRightSwipe}
+        stopLeftSwipe={SwipeListGlobals.stopLeftSwipe}
+        rightOpenValue={-SwipeListGlobals.rightOpenValue}
+        friction={SwipeListGlobals.friction}
+        tension={SwipeListGlobals.tension}
+        closeOnRowPress={SwipeListGlobals.closeOnRowPress}
+        closeOnScroll={SwipeListGlobals.closeOnScroll}
+      />
     );
   };
 
