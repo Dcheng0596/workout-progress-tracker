@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
+import { View, Text, Button, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Dimensions, Keyboard } from 'react-native';
 import CreateWorkoutList from '../components/CreateWorkoutList';
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
@@ -14,15 +14,19 @@ const CreateWorkoutModal = ({ navigation, route }) => {
     key: shortid.generate(),
     sections: [{ name: "", key: shortid.generate(), exercises: [] }]
   });
+  //Text Input focus
   const [autoFocus, setAutoFocus] = useState(false)
+  //Header offset
+  const [offset, setOffset] = useState(1)
 
   useEffect(() => {
     if(route.params != null) {
       if(route.params.isDone == true) {
+        route.params.isDone = false;
         storeWorkoutHandler();
-        SecureStore.getItemAsync('workout').then(data => navigation.navigate("Workouts"));
+        console.log(workout)
+        SecureStore.getItemAsync('workout').then(() => {navigation.navigate("Workouts")});
       }
-        
     }
   })
 
@@ -64,48 +68,61 @@ const CreateWorkoutModal = ({ navigation, route }) => {
     try {
       await SecureStore.getItemAsync('workouts')
       .then((workouts) => {
-        const w = workouts ? JSON.parse(workouts) : [];
-        w.push(workout);
-        console.log(w)
+        let w = [...JSON.parse(workouts), workout];
+
         SecureStore.setItemAsync('workouts', JSON.stringify(w))
       })
     } catch (error) {
-      console.log("Error Creating Workout")
+      console.log(error)
     }
   }
 
+  const { height: fullHeight } = Dimensions.get('window');
+
+  onLayout = ({
+    nativeEvent: { layout: { height } },
+  }) => {
+    const o = fullHeight - height;
+    setOffset( o );
+  }
+
   return (
-    <KeyboardAvoidingView 
-      style={styles.screen} 
-      behavior={Platform.OS === 'ios' ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 45 : 30}
-    >
-      <KeyboardAwareScrollView 
-        enableOnAndroid={true}
-        enableAutomaticScroll={(Platform.OS === 'ios')}
-        extraScrollHeight={120} 
-        viewIsInsideTabBar={true} 
-      > 
-        <InputField  
-          title="Workout"
-          placeholder={'e.g. "Monday Upper Body"'} 
-          onChange={WorkoutInputHandler}
-          style={styles.workoutInput}
-          autoFocus={true}
-          autoCorrect={false}
-        />  
-        <CreateWorkoutList 
-          sections={workout.sections} 
-          onChange={sectionInputHandler} 
-          onPress={removeSectionHandler} 
-          autoFocus={autoFocus}
-          autoCorrect={false}
-        />
-      </KeyboardAwareScrollView>
-      <View style={styles.createSectionButton}>
-          <CustomButton title='+' onPress={addSectionHandler}/>
-      </View>
-    </KeyboardAvoidingView>
+    <View style={styles.screen} onLayout={onLayout}>
+      <KeyboardAvoidingView  
+        style={styles.screen}
+        behavior={Platform.OS === 'ios' ? "padding" : "height"}
+        keyboardVerticalOffset={ offset }
+      >
+        <KeyboardAwareScrollView 
+          enableOnAndroid={true}
+          //enableAutomaticScroll={(Platform.OS === 'ios')}
+          //extraScrollHeight={Platform.OS === 'ios' ? 120 : 200 } 
+          extraHeight={Platform.OS === 'ios' ? 200 : 0 } 
+          viewIsInsideTabBar={true} 
+          onScrollBeginDrag={Keyboard.dismiss}
+        > 
+          <InputField  
+            title="Workout"
+            placeholder={'e.g. "Monday Upper Body"'} 
+            onChange={WorkoutInputHandler}
+            style={styles.workoutInput}
+            autoFocus={true}
+            autoCorrect={false}
+          />  
+          <CreateWorkoutList 
+            sections={workout.sections} 
+            onChange={sectionInputHandler} 
+            onPress={removeSectionHandler} 
+            autoFocus={autoFocus}
+            autoCorrect={false}
+          />
+        </KeyboardAwareScrollView>
+        <View style={styles.createSectionButton}>
+            <CustomButton style={styles.createSectionButtonText} title='+' onPress={addSectionHandler}/>
+        </View>
+      </KeyboardAvoidingView>
+    </View>
+    
   );
 };
 
@@ -116,10 +133,16 @@ const styles = StyleSheet.create({
   workoutInput: {
     width: 200,
   },
+  createSectionButtonText: {
+     height: 40
+  },
   createSectionButton: {
-    alignSelf: 'center',
-    width: 50,
-    paddingBottom: 50
+    justifyContent: 'flex-start',
+    backgroundColor: "#ffffff",
+    width: "100%",
+    height: "11%",
+    borderTopColor: 'black',
+    borderTopWidth: 1
   }
 });
 
