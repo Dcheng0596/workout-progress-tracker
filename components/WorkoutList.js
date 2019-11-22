@@ -7,16 +7,21 @@ import SwipeListGlobals from '../globals/SwipeListGlobals';
 import * as SecureStore from 'expo-secure-store';
 
 
-const WorkoutList = props => {
+const WorkoutList = ({ navigation }) => {
   const [workouts, setWorkouts] = useState([])
 
   // Fetch workouts from AsyncStorage when screen comes into focus
   useFocusEffect(
     React.useCallback(() => {
-        SecureStore.getItemAsync('workouts').then((data) => {
-        console.log(JSON.parse(data))
-        setWorkouts(JSON.parse(data))
-      })
+      try {
+        SecureStore.getItemAsync('workouts').then((workouts) => {
+          //console.log(JSON.parse(data))
+          setWorkouts([...JSON.parse(workouts)])
+        })
+      }
+      catch(err) {
+        console.log("Getting Workouts Failed");
+      }
     }, [])
   );
 
@@ -43,7 +48,9 @@ const WorkoutList = props => {
                 <TouchableHighlight  
                   style={styles.rowFront} 
                   underlayColor={'grey'} 
-                  onPress={() => {}}
+                  onPress={() => navigation.navigate('ViewWorkoutModal', {
+                    workout: data.item
+                  })}
                 >
                   <WorkoutItem title={data.item.name} />
                 </TouchableHighlight>
