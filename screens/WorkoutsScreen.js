@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import WorkoutList from '../components/WorkoutList';
-import CustomButton from '../components/CustomButton'
+import CustomButton from '../components/CustomButton';
 
 const WorkoutsScreen = ({ navigation }) => {
     return (
       <View style={styles.screen}>
-        <WorkoutList />
+        <WorkoutList navigation={navigation} />
         <View style={styles.createWorkoutButton}>
           <CustomButton title='+' onPress={() => navigation.navigate('CreateWorkoutModal')}/>
         </View>
@@ -19,8 +19,12 @@ const WorkoutsScreen = ({ navigation }) => {
       flex: 1
     },
     createWorkoutButton: {
-      alignSelf: 'center',
-      width: 50
+      justifyContent: 'center',
+      backgroundColor: "#ffffff",
+      width: "100%",
+      height: "8%",
+      borderTopColor: 'black',
+      borderTopWidth: 1
     }
   });
 
