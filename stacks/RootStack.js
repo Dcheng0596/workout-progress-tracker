@@ -3,10 +3,12 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import TabStack from './TabStack';
 import CreateWorkoutModal from '../modals/CreateWorkoutModal';
+import ViewWorkoutModal from '../modals/ViewWorkoutModal';
 
 const Stack = createStackNavigator();
 
 const RootStack = () => {
+
   return (
       <Stack.Navigator 
         initialRouteName="TabStack"
@@ -22,17 +24,23 @@ const RootStack = () => {
           }}
         />
         <Stack.Screen 
+          name="ViewWorkoutModal" 
+          component={ViewWorkoutModal}
+          initialParams={{ isDone: false }}
+          options={({ navigation, route }) => ({ title: route.params.workout.name })}
+        />
+        <Stack.Screen 
           name="CreateWorkoutModal" 
           component={CreateWorkoutModal}
           initialParams={{ isDone: false }}
           options={({ navigation }) => ({
               title: 'Create Workout',
               headerRight: () => (
-                <Button title="Done" onPress={() => 
+                <Button title="Done"  onPress={() => {
                   navigation.setParams({
                     isDone: true
-                  })
-                  } 
+                  })}
+                } 
                 />
               )
           })}
