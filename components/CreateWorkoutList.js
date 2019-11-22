@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
 import CreateWorkoutSection from './CreateWorkoutSection';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import SwipeListGlobals from '../globals/SwipeListGlobals';
@@ -47,7 +47,7 @@ const CreateWorkoutList = props => {
 
   const styles = StyleSheet.create({
     rowFront: {
-        alignItems: 'center',
+        alignItems: 'flex-start',
         backgroundColor: '#CCC',
         borderBottomColor: 'black',
         borderRadius: 5,
