@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Dimensions, Keyboard } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Dimensions, Keyboard, Alert } from 'react-native';
 import CreateWorkoutList from '../components/CreateWorkoutList';
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
@@ -15,17 +15,37 @@ const CreateWorkoutModal = ({ navigation, route }) => {
     sections: [{ name: "", key: shortid.generate(), exercises: [] }]
   });
   //Text Input focus
-  const [autoFocus, setAutoFocus] = useState(false)
+  const [autoFocus, setAutoFocus] = useState(false);
   //Header offset
-  const [offset, setOffset] = useState(1)
+  const [offset, setOffset] = useState(1);
+
+  const isInputsValid = () => {
+    let isValid = true;
+    if( workout.name === "" )
+      isValid = false;
+    
+    workout.sections.forEach( section => { if(section.name === "") {isValid = false; return}});
+    return isValid;
+  }
 
   useEffect(() => {
     if(route.params != null) {
       if(route.params.isDone == true) {
-        route.params.isDone = false;
-        storeWorkoutHandler();
-        console.log(workout)
-        SecureStore.getItemAsync('workout').then(() => {navigation.navigate("Workouts")});
+        if(isInputsValid()) {
+          console.log(isInputsValid());
+          route.params.isDone = false;
+          storeWorkoutHandler();
+          SecureStore.getItemAsync('workout').then(() => {navigation.navigate("Workouts")});
+        } else {
+          route.params.isDone = false;
+          Alert.alert(
+            'Invalid Input',
+            'Please fill out all empty fields',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed')}
+            ]
+          )
+        }
       }
     }
   })
@@ -44,6 +64,8 @@ const CreateWorkoutModal = ({ navigation, route }) => {
      let state = {...workout};
      let sectionIndex = state.sections.findIndex(element => element.key == sectionKey)
      state.sections[sectionIndex].name = sectionName;
+
+
 
      setWorkout(state);
   }
