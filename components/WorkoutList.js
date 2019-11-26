@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
 import WorkoutItem from './WorkoutItem';
-import { SwipeListView } from 'react-native-swipe-list-view';
 import { useFocusEffect } from '@react-navigation/core';
-import SwipeListGlobals from '../globals/SwipeListGlobals';
 import * as SecureStore from 'expo-secure-store';
 
 
@@ -42,60 +40,20 @@ const WorkoutList = ({ navigation }) => {
     }
 
     return (
-      <SwipeListView 
-            data={workouts}
-            renderItem={ (data, rowMap) => (
-                <TouchableHighlight  
-                  style={styles.rowFront} 
-                  underlayColor={'grey'} 
-                  onPress={() => navigation.navigate('ViewWorkoutModal', {
-                    workout: data.item
-                  })}
-                >
-                  <WorkoutItem title={data.item.name} />
-                </TouchableHighlight>
-            )}
-            renderHiddenItem={ (data, rowMap) => (
-              <TouchableOpacity 
-                style={styles.rowBack} 
-                onPress={() => removeWorkoutHandler(data.item.key)} 
-              >
-                <WorkoutItem title='Delete' />               
-              </TouchableOpacity>
-            )}
-            swipeToOpenPercent={SwipeListGlobals.swipeToOpenPercent}
-            swipeToClosePercent={SwipeListGlobals.swipeToClosePercent}
-            swipeToOpenVelocityContribution={SwipeListGlobals.swipeToOpenVelocityContribution}
-            stopRightSwipe={SwipeListGlobals.stopRightSwipe}
-            stopLeftSwipe={SwipeListGlobals.stopLeftSwipe}
-            rightOpenValue={-SwipeListGlobals.rightOpenValue}
-            friction={SwipeListGlobals.friction}
-            tension={SwipeListGlobals.tension}
-            closeOnRowPress={SwipeListGlobals.closeOnRowPress}
-            closeOnScroll={SwipeListGlobals.closeOnScroll}
-        />
+      <FlatList
+        keyboardDismissMode='on-drag'
+        data={workouts}
+        keyExtractor={data => data.key}
+        renderItem={ (data) => (
+            <WorkoutItem 
+              navigation={navigation}
+              workout={data.item}     
+              onPress={() => removeWorkoutHandler(data.item.key)}
+            />
+        )}
+      />
     );
   };
 
-  const styles = StyleSheet.create({
-    rowFront: {
-        alignItems: 'center',
-        backgroundColor: '#CCC',
-        borderBottomColor: 'black',
-        borderRadius: 5,
-        justifyContent: 'center',
-        marginHorizontal: 30,
-        marginTop: 20,
-        height: 100,
-    },
-    rowBack: {
-        alignItems: 'center',
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        marginTop: 20,
-        paddingRight: 60
-    }
-});
 
   export default WorkoutList;

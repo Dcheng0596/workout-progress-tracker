@@ -9,11 +9,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 
 const CreateWorkoutModal = ({ navigation, route }) => {
-  const [workout, setWorkout] = useState({
+  const state = {
     name: "",
     key: shortid.generate(),
-    sections: [{ name: "", key: shortid.generate(), exercises: [] }]
-  });
+    sections: [{ 
+      name: "", 
+      key: shortid.generate(),
+      exercises: [{
+         name: "", 
+         key: shortid.generate()}] }]
+  }
+  const [workout, setWorkout] = useState(state);
   //Text Input focus
   const [autoFocus, setAutoFocus] = useState(false);
   //Header offset
@@ -25,6 +31,7 @@ const CreateWorkoutModal = ({ navigation, route }) => {
       isValid = false;
     
     workout.sections.forEach( section => { if(section.name === "") {isValid = false; return}});
+    console.log(workout)
     return isValid;
   }
 
@@ -72,7 +79,7 @@ const CreateWorkoutModal = ({ navigation, route }) => {
 
   const addSectionHandler = () => {
     let state = {...workout};
-    state.sections.push({ name: "", key: shortid.generate(), exercises: [] })
+    state.sections.push({ name: "", key: shortid.generate(), exercises: [{name: "", key: shortid.generate()}]})
 
     setAutoFocus(true);
     setWorkout(state);
