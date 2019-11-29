@@ -10,7 +10,7 @@ const ViewWorkoutSection = props => {
     return (
       <View>
         <TouchableHighlight 
-          style={[styles.inputContainer, props.style]} 
+          style={[styles.container, props.style]} 
           underlayColor={'grey'} 
           onPress={() => {setIsCollapsed(!isCollapsed)}}
         >
@@ -24,16 +24,24 @@ const ViewWorkoutSection = props => {
   };
 
   const styles = StyleSheet.create({
-      inputContainer: {
-      },
-      sectionInput: {
-          width: 150
-      },
-      button: {
-        position: 'absolute',
-        top: 5,
-        right: 10
-      }
+    container: {
+      alignItems: 'flex-start',
+      backgroundColor: '#CCC',
+      borderBottomColor: 'black',
+      borderRadius: 5,
+      justifyContent: 'center',
+      marginHorizontal: 50,
+      marginTop: 10,
+      height: 100,
+    },
+    sectionInput: {
+        width: 150
+    },
+    button: {
+      position: 'absolute',
+      top: 10,
+      right: 15
+    }
       
   
   });

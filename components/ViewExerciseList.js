@@ -11,8 +11,8 @@ const ViewExerciseList = props => {
                 keyExtractor={data => data.key}
                 renderItem={ (data) => (
                     <Card 
-                        title={data.name}
-                        style={styles.rowFront}
+                        title={data.item.name}
+                        style={styles.container}
                     />
                 )}
             />
@@ -22,16 +22,16 @@ const ViewExerciseList = props => {
 }
 
 const styles = StyleSheet.create({
-    rowFront: {
-        alignItems: 'flex-start',
+    container: {
+        alignItems: 'center',
         backgroundColor: '#CCC',
         borderBottomColor: 'black',
         borderRadius: 5,
         justifyContent: 'center',
         marginHorizontal: 50,
-        marginTop: 10,
-        height: 90,
-    }
+        marginTop: 20,
+        height: 100,
+    },
 });
 
 export default ViewExerciseList;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableHighlight, StyleSheet} from 'react-native';
+import { View, TouchableHighlight, StyleSheet, Button} from 'react-native';
 import InputField from './InputField'
 import CreateExerciseList from './CreateExerciseList';
 import CustomButton from './CustomButton'
@@ -14,23 +14,39 @@ const CreateWorkoutSection = props => {
           underlayColor={'grey'} 
           onPress={() => {setIsCollapsed(!isCollapsed)}}
         >
-          <InputField  
-            title="Section"
-            placeholder={'e.g. "Warm Up"'} 
-            onChange={props.onChange}
-            itemKey={props.itemKey}
-            style={styles.sectionInput}
-            autoFocus={props.autoFocus}
-            autoCorrect={props.autoCorrect}
-          />  
+          <View>
+            <InputField  
+              title="Section"
+              placeholder={'e.g. "Warm Up"'} 
+              onChange={props.sectionInput}
+              inputKey={props.sectionKey}
+              style={styles.sectionInput}
+              autoFocus={props.sectionAutoFocus}
+              autoCorrect={props.autoCorrect}
+            />  
+            <CustomButton 
+              title='+ Exercise' style={styles2} 
+              onPress={() => {
+                props.addExercise();
+                setIsCollapsed(false);
+              }} 
+            />
+          </View>
         </TouchableHighlight>
         <CustomButton 
             title='x' style={styles} 
-            onPress={props.onPress} 
+            onPress={props.removeSection} 
           />
         <CreateExerciseList 
+          exerciseInput={props.exerciseInput}
+          removeExercise={props.removeExercise}
           exercises={props.exercises} 
+          exerciseWeighted={props.exerciseWeighted}
+          exerciseIso={props.exerciseIso}
+          sectionKey={props.sectionKey}
           collapsed={isCollapsed}
+          exerciseAutoFocus={props.exerciseAutoFocus}
+          autoCorrect={props.autoCorrect}
         />
       </View>
     );
@@ -38,12 +54,12 @@ const CreateWorkoutSection = props => {
 
   const styles = StyleSheet.create({
     container: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: 'column',
+      //alignItems: 'flex-start',
       backgroundColor: '#CCC',
       borderBottomColor: 'black',
       borderRadius: 5,
-      justifyContent: 'flex-start',
+      //justifyContent: 'space-between',
       marginHorizontal: 30,
       marginTop: 20,
       height: 100,
@@ -56,9 +72,24 @@ const CreateWorkoutSection = props => {
     },
     button: {
       position: 'absolute',
-      top: 25,
-      right: 40
+      top: 30,
+      right: 45
+    },
+    createExerciseButton: {
+    
     }
   });
+
+  const styles2 = StyleSheet.create({
+    text: {
+      fontSize: 16
+    },
+    button: {
+      alignSelf: "flex-end",
+      marginHorizontal: 20,
+      marginTop: 15
+    },
+  });
+
 
   export default CreateWorkoutSection;

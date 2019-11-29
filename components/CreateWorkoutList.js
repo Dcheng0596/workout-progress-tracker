@@ -12,12 +12,17 @@ const CreateWorkoutList = props => {
         renderItem={ (data) => (
           <CreateWorkoutSection 
             style={styles.rowFront}
-            onChange={props.onChange} 
-            itemKey={data.item.key} 
-            autoFocus={props.autoFocus}
-            autoCorrect={props.autoCorrect}
+            sectionInput={props.sectionInput} 
+            exerciseInput={props.exerciseInput}
+            sectionKey={data.item.key} 
+            sectionAutoFocus={props.sectionAutoFocus}
+            exerciseAutoFocus={props.exerciseAutoFocus}
             exercises={data.item.exercises}
-            onPress={() => props.onPress(data.item.key)}
+            exerciseWeighted={props.exerciseWeighted}
+            exerciseIso={props.exerciseIso}
+            removeExercise={props.removeExercise}
+            removeSection={() => props.removeSection(data.item.key)}
+            addExercise={() => props.addExercise(data.item.key)}
           />
       )}
       />

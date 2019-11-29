@@ -7,7 +7,7 @@ const InputField = props => {
         <TextInput 
             style={[styles.inputField, props.style]} 
             placeholder={props.placeholder}
-            onChangeText={(text) => props.onChange(text, props.itemKey)}
+            onChangeText={(text) => props.onChange(text, props.inputKey, props.inputKey2)}
             autoFocus={props.autoFocus}
             autoCorrect={props.autoCorrect}
         />
@@ -18,10 +18,11 @@ const InputField = props => {
 
   const styles = StyleSheet.create({
     inputContainer: {
-        margin: 20
+        marginHorizontal: 20,
+        marginTop: 15,
     },
     inputField: {
-        height: 30,
+        height: 20,
         borderBottomColor: 'black',
         borderBottomWidth: 1
     }
