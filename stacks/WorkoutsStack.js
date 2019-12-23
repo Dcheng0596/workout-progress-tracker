@@ -12,7 +12,7 @@ const WorkoutsStack = () => {
                 name="Workouts" 
                 component={WorkoutsScreen}
                 options={({ navigation }) => ({
-                    title: 'Create Workout',
+                    title: 'Workouts',
                     headerRight: () => (
                     <Button title="Add"  onPress={() => {
                         navigation.navigate("CreateWorkoutModal")

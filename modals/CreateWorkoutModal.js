@@ -19,7 +19,9 @@ const CreateWorkoutModal = ({ navigation, route }) => {
          name: "", 
          key: shortid.generate(),
          isWeighted: false,
-         isIsometric: false
+         isIsometric: false,
+         weight: 0,
+         sets: []
         }] 
     }]
   }
@@ -124,8 +126,12 @@ const CreateWorkoutModal = ({ navigation, route }) => {
   const addExerciseHandler = (sectionKey) => {
     let state = {...workout};
     let sectionIndex = state.sections.findIndex(element => element.key == sectionKey)
-    state.sections[sectionIndex].exercises.push({ name: "", key: shortid.generate(), isWeighted: false,
-    isIsometric: false}); 
+    state.sections[sectionIndex].exercises.push({ 
+      name: "", key: shortid.generate(), 
+      isWeighted: false,
+      isIsometric: false,
+      sets: []
+  }); 
 
     setExerciseAutoFocus(true);
     setWorkout(state);
@@ -133,8 +139,12 @@ const CreateWorkoutModal = ({ navigation, route }) => {
 
   const addSectionHandler = () => {
     let state = {...workout};
-    state.sections.push({ name: "", key: shortid.generate(), exercises: [{name: "", key: shortid.generate(), isWeighted: false,
-    isIsometric: false}]}); 
+    state.sections.push({ name: "", key: shortid.generate(), exercises: [{
+      name: "", key: shortid.generate(), 
+      isWeighted: false,
+      isIsometric: false,
+      sets: []
+    }]}); 
 
     setSectionAutoFocus(true);
     setWorkout(state);

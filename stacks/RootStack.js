@@ -36,11 +36,11 @@ const RootStack = () => {
           name="CreateWorkoutModal" 
           component={CreateWorkoutModal}
           initialParams={{ isDone: false }}
-          options={({ navigation, tra }) => ({
+          options={({ navigation }) => ({
               title: 'Create Workout',
               ...TransitionPresets.ModalSlideFromBottomIOS,
               headerRight: () => (
-                <Button title="Done"  onPress={() => {
+                <Button title="Done" onPress={() => {
                   navigation.setParams({
                     isDone: true
                   })}
