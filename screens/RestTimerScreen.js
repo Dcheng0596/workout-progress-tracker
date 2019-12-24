@@ -10,6 +10,7 @@ const RestTimerScreen = ({ navigation, route }) => {
   const [timer, setTimer] = useState(0);
   const [reps, setReps] = useState(0);
   const [weight, setWeight] = useState(0);
+  const [isLastExercise, setIsLastExercise] = useState(false);
 
   let exerciseIndex = route.params.exerciseIndex;
 
@@ -19,6 +20,9 @@ const RestTimerScreen = ({ navigation, route }) => {
         const interval = setInterval(() => {
         setTimer(timer => timer + 1)
       }, 1000);
+      if(lastExercise()){
+        setIsLastExercise(true);
+      }
       
       return () => {
         clearInterval(interval);
@@ -62,9 +66,7 @@ const RestTimerScreen = ({ navigation, route }) => {
     } else if(exerciseIndex.section < sectionLen - 1) {
       exerciseIndex.section = exerciseIndex.section + 1;
       exerciseIndex.exercise = 0;
-    } else {
-      //Finished workout
-    }
+    } 
   }
 
   const repInputField = () => {
@@ -99,6 +101,16 @@ const RestTimerScreen = ({ navigation, route }) => {
     }
   }
 
+  const lastExercise = () => {
+    const sectionLen = workout.sections.length;
+    const exerciseLen = workout.sections[exerciseIndex.section].exercises.length;
+  
+    if(exerciseIndex.exercise == exerciseLen - 1 && exerciseIndex.section == sectionLen - 1) {
+      return true;
+    }
+    return false;
+  }
+
     return (
       <View style={styles.screen}>
         {displayTimer()}
@@ -112,15 +124,13 @@ const RestTimerScreen = ({ navigation, route }) => {
         </View>
         <CustomButton style={styles} title="Next Set" onPress={() => {
             addSetHandler();
-            console.log(workout);
             navigation.navigate("Exercise Timer", {workout: workout, exerciseIndex: exerciseIndex});
           }} 
         />
-        <CustomButton style={styles} title="Next Exercise" onPress={() => {
+        <CustomButton style={styles} title={isLastExercise ? "Finish Workout" : "Next Exercise"} onPress={() => {
             addSetHandler();
-            console.log(workout);
             nextExercise();
-            navigation.navigate("Exercise Timer", {workout: workout, exerciseIndex: exerciseIndex});
+            navigation.navigate("Exercise Timer", {workout: workout, exerciseIndex: exerciseIndex, });
           }} 
         />
       </View> 
