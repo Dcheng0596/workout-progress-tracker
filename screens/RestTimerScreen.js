@@ -8,6 +8,8 @@ import InputField from '../components/InputField';
 const RestTimerScreen = ({ navigation, route }) => {
   const [workout, setWorkout] = useState(route.params.workout);
   const [timer, setTimer] = useState(0);
+  const [reps, setReps] = useState(0);
+  const [weight, setWeight] = useState(0);
 
   let exerciseIndex = route.params.exerciseIndex;
 
@@ -40,9 +42,9 @@ const RestTimerScreen = ({ navigation, route }) => {
 
   const addSetHandler = () => {
     let state = {...workout};
-    console.log(exerciseIndex)
     state.sections[exerciseIndex.section].exercises[exerciseIndex.exercise].sets.push({
-      reps: 5,
+      reps: reps,
+      weight: weight,
       exerciseTime: route.params.exerciseTime,
       restTime: timer
     })
@@ -73,7 +75,7 @@ const RestTimerScreen = ({ navigation, route }) => {
        ));
       return (
         <RNPickerSelect
-          onValueChange={(value) => console.log(value)}
+          onValueChange={(value) => setReps(value)}
           items={numbers}
           placeholder={{}}
         />
@@ -83,13 +85,13 @@ const RestTimerScreen = ({ navigation, route }) => {
 
   const weightInputField = () => {
     const isWeighted = workout.sections[exerciseIndex.section].exercises[exerciseIndex.exercise].isWeighted;
-    if(!isWeighted) {
+    if(isWeighted) {
       const numbers = [...Array(99).keys()].map(number => (
         { label: ((number + 1)*5).toString(), value: (number + 1)*5}
        ));
       return (
         <RNPickerSelect
-          onValueChange={(value) => console.log(value)}
+          onValueChange={(value) => setWeight(value)}
           items={numbers}
           placeholder={{}}
         />
@@ -110,11 +112,13 @@ const RestTimerScreen = ({ navigation, route }) => {
         </View>
         <CustomButton style={styles} title="Next Set" onPress={() => {
             addSetHandler();
+            console.log(workout);
             navigation.navigate("Exercise Timer", {workout: workout, exerciseIndex: exerciseIndex});
           }} 
         />
         <CustomButton style={styles} title="Next Exercise" onPress={() => {
             addSetHandler();
+            console.log(workout);
             nextExercise();
             navigation.navigate("Exercise Timer", {workout: workout, exerciseIndex: exerciseIndex});
           }} 
